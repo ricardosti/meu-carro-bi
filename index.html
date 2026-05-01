@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SmartCar BI - DRE Automotivo</title>
+    <title>SmartCar BI - DRE de Ativos v8</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
@@ -14,114 +14,120 @@
         input { width: 100%; background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 4px; padding: 3px 8px; font-weight: 600; font-size: 0.85rem; }
         .header-input { background: #1e293b !important; border: 1px solid #334155 !important; color: #60a5fa !important; border-bottom: 2px solid #3b82f6 !important; }
         .section-title { font-size: 0.75rem; font-weight: 800; color: #1e293b; border-bottom: 1px solid #e2e8f0; margin-bottom: 10px; padding-bottom: 4px; display: flex; align-items: center; gap: 5px; }
-        th { text-align: left; font-size: 10px; color: #64748b; text-transform: uppercase; padding: 8px; border-bottom: 2px solid #f1f5f9; }
-        td { padding: 8px; font-size: 12px; border-bottom: 1px solid #f1f5f9; }
+        th { text-align: left; font-size: 10px; color: #64748b; text-transform: uppercase; padding: 10px 8px; border-bottom: 2px solid #e2e8f0; }
+        td { padding: 10px 8px; font-size: 12px; border-bottom: 1px solid #f1f5f9; }
+        .row-total { background-color: #f8fafc; font-weight: 800; color: #1e293b; border-top: 2px solid #e2e8f0; }
     </style>
 </head>
 <body class="p-2 md:p-4 text-slate-800">
     <div class="max-w-[1440px] mx-auto">
         
-        <!-- PAINEL GLOBAL -->
+        <!-- HEADER BI -->
         <header class="mb-4 bg-slate-900 p-5 rounded-2xl text-white shadow-2xl">
             <div class="flex flex-col lg:flex-row justify-between items-center gap-6">
                 <div>
-                    <h1 class="text-2xl font-black italic tracking-tighter text-white leading-none">SMARTCAR <span class="text-blue-500">BI</span></h1>
-                    <p class="text-[10px] text-slate-400 uppercase tracking-[0.2em] font-bold mt-1 italic">Financial Asset Control</p>
+                    <h1 class="text-2xl font-black italic tracking-tighter text-white leading-none uppercase">SmartCar <span class="text-blue-500 text-3xl font-black">BI</span></h1>
+                    <p class="text-[10px] text-slate-400 uppercase tracking-[0.2em] font-bold mt-1 italic">DRE de Gestão Automotiva</p>
                 </div>
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 w-full lg:w-auto">
-                    <div><label class="text-slate-400 text-[9px]">CDI Anual %</label><input type="number" id="global_cdi" value="12.60" step="0.1" class="header-input text-right" oninput="calcular()"></div>
-                    <div><label class="text-slate-400 text-[9px]">Uso KM/Mês</label><input type="number" id="global_km" value="1200" class="header-input text-right" oninput="calcular()"></div>
-                    <div><label class="text-slate-400 text-[9px]">Gasolina R$/L</label><input type="number" id="global_gas" value="5.85" step="0.01" class="header-input text-right" oninput="calcular()"></div>
-                    <div><label class="text-blue-400 text-[9px]">Garagem/Mês</label><input type="number" id="global_infra" value="150" class="header-input text-right border-l-2 border-blue-500" oninput="calcular()"></div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 w-full lg:w-auto">
+                    <div><label class="text-slate-400 text-[9px]">Cenário CDI Anual %</label><input type="number" id="global_cdi" value="12.60" step="0.1" class="header-input text-right" oninput="calcular()"></div>
+                    <div><label class="text-slate-400 text-[9px]">KMs Rodados / Mês</label><input type="number" id="global_km" value="1200" class="header-input text-right" oninput="calcular()"></div>
+                    <div><label class="text-blue-400 text-[9px]">Fixo Garagem/Lavagem/etc (R$)</label><input type="number" id="global_infra" value="150" class="header-input text-right border-l-2 border-blue-500" oninput="calcular()"></div>
                 </div>
             </div>
         </header>
 
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
-            <!-- INPUTS CARRO A -->
+            <!-- CARRO A -->
             <div class="lg:col-span-3 space-y-4">
                 <div class="card-input border-t-4 border-blue-600">
-                    <div class="section-title text-blue-600 uppercase">A • Renegade 1.8</div>
+                    <div class="section-title text-blue-600 uppercase italic">A • Renegade 1.8</div>
                     <div class="space-y-4">
                         <div class="grid grid-cols-2 gap-2">
-                            <div><label>FIPE</label><input type="number" id="vA_fipe" value="90000" oninput="calcular()"></div>
+                            <div><label>FIPE IPVA</label><input type="number" id="vA_fipe" value="90000" oninput="calcular()"></div>
                             <div><label>Valor Pago</label><input type="number" id="vA_avista" value="85000" oninput="calcular()"></div>
-                            <div><label>Consumo</label><input type="number" id="vA_consumo" value="8" oninput="calcular()"></div>
-                            <div><label>Seguro Anual</label><input type="number" id="vA_seguro" value="3500" oninput="calcular()"></div>
                         </div>
-                        <div class="bg-slate-50 p-2 rounded-lg">
-                            <label class="mb-2">Financiamento</label>
-                            <div class="grid grid-cols-2 gap-2">
-                                <input type="number" id="vA_finan_val" value="0" placeholder="Valor" oninput="calcular()">
-                                <input type="number" id="vA_finan_taxa" value="1.8" placeholder="Juros %" oninput="calcular()">
-                            </div>
+                        <div class="bg-blue-50 p-2 rounded-lg grid grid-cols-2 gap-2">
+                            <div><label>Consumo (km/l)</label><input type="number" id="vA_consumo" value="8" oninput="calcular()"></div>
+                            <div><label>Preço Comb. R$</label><input type="number" id="vA_gas" value="5.85" step="0.01" oninput="calcular()"></div>
                         </div>
                         <div class="grid grid-cols-2 gap-2">
+                            <div><label>Seguro Anual</label><input type="number" id="vA_seguro" value="3500" oninput="calcular()"></div>
+                            <div><label>IPVA %</label><input type="number" id="vA_ipva_taxa" value="4" oninput="calcular()"></div>
                             <div><label>Manut./Mês</label><input type="number" id="vA_manut" value="300" oninput="calcular()"></div>
-                            <div><label>Depre. Anual %</label><input type="number" id="vA_depre" value="3" oninput="calcular()"></div>
+                            <div><label>Depreciação %</label><input type="number" id="vA_depre" value="3" oninput="calcular()"></div>
+                        </div>
+                        <div class="bg-slate-50 p-2 rounded-lg border">
+                            <label class="mb-1 text-[9px]">Financiamento (R$ / Taxa)</label>
+                            <div class="grid grid-cols-2 gap-2">
+                                <input type="number" id="vA_finan_val" value="0" placeholder="R$" oninput="calcular()">
+                                <input type="number" id="vA_finan_taxa" value="1.8" placeholder="%" oninput="calcular()">
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- INPUTS CARRO B -->
+            <!-- CARRO B -->
             <div class="lg:col-span-3 space-y-4">
                 <div class="card-input border-t-4 border-orange-500">
-                    <div class="section-title text-orange-600 uppercase">B • T-Cross 1.0</div>
+                    <div class="section-title text-orange-600 uppercase italic">B • T-Cross 1.0</div>
                     <div class="space-y-4">
                         <div class="grid grid-cols-2 gap-2">
-                            <div><label>FIPE</label><input type="number" id="vB_fipe" value="120000" oninput="calcular()"></div>
+                            <div><label>FIPE IPVA</label><input type="number" id="vB_fipe" value="120000" oninput="calcular()"></div>
                             <div><label>Valor Pago</label><input type="number" id="vB_avista" value="110000" oninput="calcular()"></div>
-                            <div><label>Consumo</label><input type="number" id="vB_consumo" value="12" oninput="calcular()"></div>
-                            <div><label>Seguro Anual</label><input type="number" id="vB_seguro" value="4200" oninput="calcular()"></div>
                         </div>
-                        <div class="bg-slate-50 p-2 rounded-lg">
-                            <label class="mb-2">Financiamento</label>
-                            <div class="grid grid-cols-2 gap-2">
-                                <input type="number" id="vB_finan_val" value="0" placeholder="Valor" oninput="calcular()">
-                                <input type="number" id="vB_finan_taxa" value="1.8" placeholder="Juros %" oninput="calcular()">
-                            </div>
+                        <div class="bg-orange-50 p-2 rounded-lg grid grid-cols-2 gap-2">
+                            <div><label>Consumo (km/l)</label><input type="number" id="vB_consumo" value="12" oninput="calcular()"></div>
+                            <div><label>Preço Comb. R$</label><input type="number" id="vB_gas" value="5.85" step="0.01" oninput="calcular()"></div>
                         </div>
                         <div class="grid grid-cols-2 gap-2">
+                            <div><label>Seguro Anual</label><input type="number" id="vB_seguro" value="4200" oninput="calcular()"></div>
+                            <div><label>IPVA %</label><input type="number" id="vB_ipva_taxa" value="4" oninput="calcular()"></div>
                             <div><label>Manut./Mês</label><input type="number" id="vB_manut" value="450" oninput="calcular()"></div>
-                            <div><label>Depre. Anual %</label><input type="number" id="vB_depre" value="5" oninput="calcular()"></div>
+                            <div><label>Depreciação %</label><input type="number" id="vB_depre" value="5" oninput="calcular()"></div>
+                        </div>
+                        <div class="bg-slate-50 p-2 rounded-lg border">
+                            <label class="mb-1 text-[9px]">Financiamento (R$ / Taxa)</label>
+                            <div class="grid grid-cols-2 gap-2">
+                                <input type="number" id="vB_finan_val" value="0" placeholder="R$" oninput="calcular()">
+                                <input type="number" id="vB_finan_taxa" value="1.8" placeholder="%" oninput="calcular()">
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- DASHBOARD DE RESULTADOS -->
+            <!-- RESULTADOS -->
             <div class="lg:col-span-6 space-y-4">
-                <div class="grid grid-cols-2 gap-4">
-                    <div class="bg-slate-900 p-6 rounded-2xl text-white shadow-xl relative overflow-hidden">
-                        <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Diferença Mensal</p>
+                <div class="grid grid-cols-2 gap-4 text-center">
+                    <div class="bg-slate-900 p-6 rounded-2xl text-white shadow-xl">
+                        <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest mb-1">Diferença Mensal</p>
                         <h2 class="text-4xl font-black text-red-500" id="delta_val">R$ 0</h2>
                     </div>
-                    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
-                        <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Impacto Anual</p>
-                        <h2 class="text-4xl font-black text-slate-800" id="delta_anual">R$ 0</h2>
+                    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-center">
+                        <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest mb-1 italic">Diferença Anual (Saving/Extra)</p>
+                        <h2 class="text-3xl font-black text-slate-800" id="delta_anual">R$ 0</h2>
                     </div>
                 </div>
 
-                <!-- GRÁFICO -->
-                <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm">
-                    <canvas id="mainChart" height="200"></canvas>
+                <div class="bg-white p-4 rounded-2xl border border-slate-200">
+                    <canvas id="mainChart" height="180"></canvas>
                 </div>
 
-                <!-- TABELA RESUMO -->
-                <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
-                    <table class="w-full">
+                <!-- TABELA DRE -->
+                <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+                    <table class="w-full text-left">
                         <thead>
                             <tr class="bg-slate-50">
-                                <th>Categoria</th>
-                                <th>Renegade (Mês/Ano)</th>
-                                <th>T-Cross (Mês/Ano)</th>
+                                <th>Demonstrativo de Custos</th>
+                                <th>Carro A (Mês/Ano)</th>
+                                <th>Carro B (Mês/Ano)</th>
                                 <th class="text-right">Diferença Anual</th>
                             </tr>
                         </thead>
-                        <tbody id="tableBody">
-                            <!-- JS preenche aqui -->
-                        </tbody>
+                        <tbody id="tableBody"></tbody>
+                        <tfoot id="tableFoot"></tfoot>
                     </table>
                 </div>
             </div>
@@ -130,26 +136,27 @@
 
     <script>
         let chart;
-        const categorias = ['Gasolina', 'IPVA/Seguro', 'Garagem', 'Manutenção', 'Financiamento', 'CDI (Oport)', 'Depreciação'];
+        const categorias = ['Combustível', 'IPVA/Seguro/Licenc.', 'Garagem/Lavagem/etc', 'Manutenção', 'Parcela Financiamento', 'Custo Oportunidade (CDI)', 'Depreciação Real Est.'];
 
         function calcularTCO(prefixo) {
             const getVal = (id) => parseFloat(document.getElementById(id).value) || 0;
             const km = getVal('global_km');
-            const gas = getVal('global_gas');
             const cdi = getVal('global_cdi') / 100;
             const infra = getVal('global_infra');
 
             const fipe = getVal(`${prefixo}_fipe`);
             const avista = getVal(`${prefixo}_avista`);
             const consumo = getVal(`${prefixo}_consumo`) || 1;
+            const gas = getVal(`${prefixo}_gas`);
             const seguro = getVal(`${prefixo}_seguro`);
+            const ipvaPct = getVal(`${prefixo}_ipva_taxa`) / 100;
             const depre = getVal(`${prefixo}_depre`) / 100;
             const manut = getVal(`${prefixo}_manut`);
             const finanVal = getVal(`${prefixo}_finan_val`);
             const finanTaxa = getVal(`${prefixo}_finan_taxa`) / 100;
 
             const m_gas = (km / consumo) * gas;
-            const m_fixos = ((fipe * 0.04) + 150 + seguro) / 12;
+            const m_fixos = ((fipe * ipvaPct) + 150 + seguro) / 12;
             const m_infra = infra;
             const m_manut = manut;
             const m_cdi = (avista * cdi) / 12;
@@ -160,8 +167,7 @@
             }
 
             const data = [m_gas, m_fixos, m_infra, m_manut, m_parcela, m_cdi, m_depre];
-            const total = data.reduce((a, b) => a + b, 0);
-            return { total, data };
+            return { total: data.reduce((a, b) => a + b, 0), data };
         }
 
         function calcular() {
@@ -172,18 +178,25 @@
             document.getElementById('delta_val').innerText = fmt(resB.total - resA.total);
             document.getElementById('delta_anual').innerText = fmt((resB.total - resA.total) * 12);
 
-            // Preencher Tabela
-            let html = "";
+            let htmlBody = "";
             categorias.forEach((cat, i) => {
                 const diffAnual = (resB.data[i] - resA.data[i]) * 12;
-                html += `<tr>
-                    <td class="font-bold text-slate-500">${cat}</td>
-                    <td>${fmt(resA.data[i])} <span class="text-[10px] text-slate-400">/ ${fmt(resA.data[i]*12)}</span></td>
-                    <td>${fmt(resB.data[i])} <span class="text-[10px] text-slate-400">/ ${fmt(resB.data[i]*12)}</span></td>
-                    <td class="text-right font-bold ${diffAnual > 0 ? 'text-red-500' : 'text-green-500'}">${fmt(diffAnual)}</td>
+                htmlBody += `<tr>
+                    <td class="font-semibold text-slate-500">${cat}</td>
+                    <td>${fmt(resA.data[i])} <span class="text-[9px] text-slate-400">(${fmt(resA.data[i]*12)})</span></td>
+                    <td>${fmt(resB.data[i])} <span class="text-[9px] text-slate-400">(${fmt(resB.data[i]*12)})</span></td>
+                    <td class="text-right font-bold ${diffAnual > 0 ? 'text-red-500' : 'text-green-600'}">${fmt(diffAnual)}</td>
                 </tr>`;
             });
-            document.getElementById('tableBody').innerHTML = html;
+            document.getElementById('tableBody').innerHTML = htmlBody;
+
+            const totalDiffAnual = (resB.total - resA.total) * 12;
+            document.getElementById('tableFoot').innerHTML = `<tr class="row-total">
+                <td>TOTAL GERAL (TCO)</td>
+                <td>${fmt(resA.total)} /mês <span class="text-[9px] opacity-60">(${fmt(resA.total*12)}/ano)</span></td>
+                <td>${fmt(resB.total)} /mês <span class="text-[9px] opacity-60">(${fmt(resB.total*12)}/ano)</span></td>
+                <td class="text-right text-lg">${fmt(totalDiffAnual)}</td>
+            </tr>`;
 
             updateChart(resA.data, resB.data);
         }
@@ -196,8 +209,8 @@
                 data: {
                     labels: categorias,
                     datasets: [
-                        { label: 'Renegade', data: dA, backgroundColor: '#3b82f6', borderRadius: 5 },
-                        { label: 'T-Cross', data: dB, backgroundColor: '#f97316', borderRadius: 5 }
+                        { label: 'Veículo A', data: dA, backgroundColor: '#3b82f6', borderRadius: 4 },
+                        { label: 'Veículo B', data: dB, backgroundColor: '#f97316', borderRadius: 4 }
                     ]
                 },
                 options: {
