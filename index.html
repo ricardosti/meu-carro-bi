@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SmartCar BI - Comparador Full TCO</title>
+    <title>SmartCar BI - Renegade vs T-Cross</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
@@ -13,19 +13,21 @@
         label { font-size: 0.65rem; font-weight: 700; color: #64748b; text-transform: uppercase; display: block; margin-bottom: 2px; }
         input { width: 100%; background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 4px; padding: 3px 8px; font-weight: 600; font-size: 0.85rem; }
         .section-title { font-size: 0.75rem; font-weight: 800; color: #1e293b; border-bottom: 1px solid #e2e8f0; margin-bottom: 10px; padding-bottom: 4px; display: flex; align-items: center; gap: 5px; }
+        .fixed-cost-bg { background: #f0f9ff; border: 1px border-blue-100; }
     </style>
 </head>
 <body class="p-2 md:p-4">
     <div class="max-w-[1400px] mx-auto">
         
         <!-- Header BI -->
-        <header class="mb-4 flex flex-col md:flex-row justify-between items-center bg-slate-900 p-4 rounded-xl text-white">
+        <header class="mb-4 flex flex-col md:flex-row justify-between items-center bg-slate-900 p-4 rounded-xl text-white shadow-lg">
             <div>
-                <h1 class="text-xl font-black italic tracking-tighter uppercase">SmartCar <span class="text-blue-400">BI Comparador</span></h1>
+                <h1 class="text-xl font-black italic tracking-tighter uppercase leading-none text-blue-400">SmartCar BI</h1>
+                <p class="text-[9px] text-slate-400 uppercase tracking-widest font-bold mt-1">Asset Management Automotivo</p>
             </div>
             <div class="flex gap-6 mt-4 md:mt-0">
-                <div><label class="text-slate-400 text-[10px]">CDI Anual %</label><input type="number" id="global_cdi" value="12.60" step="0.1" class="w-20 bg-slate-800 border-none text-blue-400 text-right" oninput="calcular()"></div>
-                <div><label class="text-slate-400 text-[10px]">KM Mensal</label><input type="number" id="global_km" value="1000" class="w-20 bg-slate-800 border-none text-blue-400 text-right" oninput="calcular()"></div>
+                <div><label class="text-slate-400 text-[10px]">Taxa CDI Anual %</label><input type="number" id="global_cdi" value="12.60" step="0.1" class="w-20 bg-slate-800 border-none text-blue-400 text-right" oninput="calcular()"></div>
+                <div><label class="text-slate-400 text-[10px]">Uso KM Mensal</label><input type="number" id="global_km" value="1200" class="w-20 bg-slate-800 border-none text-blue-400 text-right" oninput="calcular()"></div>
                 <div><label class="text-slate-400 text-[10px]">Gasolina R$</label><input type="number" id="global_gas" value="5.85" step="0.01" class="w-20 bg-slate-800 border-none text-blue-400 text-right" oninput="calcular()"></div>
             </div>
         </header>
@@ -34,15 +36,21 @@
             
             <!-- VEÍCULO A -->
             <div class="lg:col-span-4 space-y-4">
-                <div class="card-input border-t-4 border-blue-500">
-                    <div class="section-title text-blue-600 italic">VEÍCULO A</div>
+                <div class="card-input border-t-4 border-blue-600">
+                    <div class="section-title text-blue-600 italic">VEÍCULO A (ATUAL)</div>
                     
                     <div class="space-y-4">
-                        <!-- Aquisição -->
-                        <div class="grid grid-cols-2 gap-2">
-                            <div class="col-span-2"><label>Nome do Veículo</label><input type="text" value="Fox Connect 1.6" class="italic"></div>
-                            <div><label>FIPE (Base IPVA)</label><input type="number" id="vA_fipe" value="19000" oninput="calcular()"></div>
-                            <div><label>Valor Pago à Vista</label><input type="number" id="vA_avista" value="13500" oninput="calcular()"></div>
+                        <div class="col-span-2"><label>Nome do Veículo</label><input type="text" id="vA_nome" value="Renegade 1.8" class="italic border-none bg-transparent !p-0 text-slate-700 font-black"></div>
+                        
+                        <!-- Custos de Posse (Fixos) -->
+                        <div class="fixed-cost-bg p-3 rounded-lg space-y-3">
+                            <div class="section-title !border-blue-200 !mb-2 !pb-1 text-[9px]">CUSTOS DE POSSE (FIXO)</div>
+                            <div class="grid grid-cols-2 gap-2">
+                                <div><label>FIPE (Cálculo IPVA)</label><input type="number" id="vA_fipe" value="90000" oninput="calcular()"></div>
+                                <div><label>Vlr Pago à Vista</label><input type="number" id="vA_avista" value="85000" oninput="calcular()"></div>
+                                <div><label>Garagem/Limpeza</label><input type="number" id="vA_limp" value="150" oninput="calcular()"></div>
+                                <div><label>Seguro Anual</label><input type="number" id="vA_seguro" value="3500" oninput="calcular()"></div>
+                            </div>
                         </div>
 
                         <!-- Financiamento -->
@@ -50,23 +58,17 @@
                             <div class="section-title text-[9px]">FINANCIAMENTO</div>
                             <div class="grid grid-cols-3 gap-2">
                                 <div class="col-span-3"><label>Valor Financiado</label><input type="number" id="vA_finan_val" value="0" oninput="calcular()"></div>
-                                <div><label>Juros % mês</label><input type="number" id="vA_finan_taxa" value="1.8" oninput="calcular()"></div>
+                                <div><label>Juros %mês</label><input type="number" id="vA_finan_taxa" value="1.8" oninput="calcular()"></div>
                                 <div class="col-span-2"><label>Prazo (Meses)</label><input type="number" id="vA_finan_prazo" value="48" oninput="calcular()"></div>
                             </div>
                         </div>
 
-                        <!-- Custos que dependem do uso -->
+                        <!-- Performance e Depreciação -->
                         <div class="grid grid-cols-2 gap-2">
                             <div><label>Consumo (km/l)</label><input type="number" id="vA_consumo" value="8" oninput="calcular()"></div>
-                            <div><label>IPVA Alíquota %</label><input type="number" id="vA_ipva_taxa" value="4.5" oninput="calcular()"></div>
-                            <div><label>Seguro Anual</label><input type="number" id="vA_seguro" value="2050" oninput="calcular()"></div>
-                            <div><label>Depreciação Anual %</label><input type="number" id="vA_depre" value="2" oninput="calcular()"></div>
-                        </div>
-
-                        <!-- Custos Operacionais -->
-                        <div class="bg-blue-50/50 p-2 rounded-lg grid grid-cols-2 gap-2">
-                            <div><label>Manutenção Mensal</label><input type="number" id="vA_manut" value="250" oninput="calcular()"></div>
-                            <div><label>Limpeza/Garagem</label><input type="number" id="vA_limp" value="10" oninput="calcular()"></div>
+                            <div><label>IPVA Alíquota %</label><input type="number" id="vA_ipva_taxa" value="4" oninput="calcular()"></div>
+                            <div><label>Depreciação Anual %</label><input type="number" id="vA_depre" value="3" oninput="calcular()"></div>
+                            <div><label>Manutenção Mensal</label><input type="number" id="vA_manut" value="300" oninput="calcular()"></div>
                         </div>
                     </div>
                 </div>
@@ -78,31 +80,35 @@
                     <div class="section-title text-orange-600 italic">VEÍCULO B (UPGRADE)</div>
                     
                     <div class="space-y-4">
-                        <div class="grid grid-cols-2 gap-2">
-                            <div class="col-span-2"><label>Nome do Veículo</label><input type="text" value="Renault Captur" class="italic"></div>
-                            <div><label>FIPE (Base IPVA)</label><input type="number" id="vB_fipe" value="85000" oninput="calcular()"></div>
-                            <div><label>Valor Pago à Vista</label><input type="number" id="vB_avista" value="50000" oninput="calcular()"></div>
+                        <div class="col-span-2"><label>Nome do Veículo</label><input type="text" id="vB_nome" value="T-Cross 1.0" class="italic border-none bg-transparent !p-0 text-slate-700 font-black"></div>
+                        
+                        <!-- Custos de Posse (Fixos) -->
+                        <div class="bg-orange-50 p-3 rounded-lg space-y-3 border border-orange-100">
+                            <div class="section-title !border-orange-200 !mb-2 !pb-1 text-[9px]">CUSTOS DE POSSE (FIXO)</div>
+                            <div class="grid grid-cols-2 gap-2">
+                                <div><label>FIPE (Cálculo IPVA)</label><input type="number" id="vB_fipe" value="120000" oninput="calcular()"></div>
+                                <div><label>Vlr Pago à Vista</label><input type="number" id="vB_avista" value="110000" oninput="calcular()"></div>
+                                <div><label>Garagem/Limpeza</label><input type="number" id="vB_limp" value="150" oninput="calcular()"></div>
+                                <div><label>Seguro Anual</label><input type="number" id="vB_seguro" value="4200" oninput="calcular()"></div>
+                            </div>
                         </div>
 
+                        <!-- Financiamento -->
                         <div class="bg-slate-50 p-2 rounded-lg">
                             <div class="section-title text-[9px]">FINANCIAMENTO</div>
                             <div class="grid grid-cols-3 gap-2">
-                                <div class="col-span-3"><label>Valor Financiado</label><input type="number" id="vB_finan_val" value="35000" oninput="calcular()"></div>
-                                <div><label>Juros % mês</label><input type="number" id="vB_finan_taxa" value="1.8" oninput="calcular()"></div>
+                                <div class="col-span-3"><label>Valor Financiado</label><input type="number" id="vB_finan_val" value="0" oninput="calcular()"></div>
+                                <div><label>Juros %mês</label><input type="number" id="vB_finan_taxa" value="1.8" oninput="calcular()"></div>
                                 <div class="col-span-2"><label>Prazo (Meses)</label><input type="number" id="vB_finan_prazo" value="48" oninput="calcular()"></div>
                             </div>
                         </div>
 
+                        <!-- Performance e Depreciação -->
                         <div class="grid grid-cols-2 gap-2">
-                            <div><label>Consumo (km/l)</label><input type="number" id="vB_consumo" value="9" oninput="calcular()"></div>
+                            <div><label>Consumo (km/l)</label><input type="number" id="vB_consumo" value="12" oninput="calcular()"></div>
                             <div><label>IPVA Alíquota %</label><input type="number" id="vB_ipva_taxa" value="4" oninput="calcular()"></div>
-                            <div><label>Seguro Anual</label><input type="number" id="vB_seguro" value="3500" oninput="calcular()"></div>
                             <div><label>Depreciação Anual %</label><input type="number" id="vB_depre" value="5" oninput="calcular()"></div>
-                        </div>
-
-                        <div class="bg-orange-50/50 p-2 rounded-lg grid grid-cols-2 gap-2">
-                            <div><label>Manutenção Mensal</label><input type="number" id="vB_manut" value="400" oninput="calcular()"></div>
-                            <div><label>Limpeza/Garagem</label><input type="number" id="vB_limp" value="100" oninput="calcular()"></div>
+                            <div><label>Manutenção Mensal</label><input type="number" id="vB_manut" value="450" oninput="calcular()"></div>
                         </div>
                     </div>
                 </div>
@@ -111,29 +117,29 @@
             <!-- RESULTADOS BI -->
             <div class="lg:col-span-4 space-y-4">
                 <div class="bg-slate-900 p-6 rounded-xl text-white shadow-xl">
-                    <h3 class="text-[10px] font-bold text-slate-400 uppercase mb-4 tracking-widest text-center italic">Impacto Patrimonial Mensal</h3>
+                    <h3 class="text-[10px] font-bold text-slate-400 uppercase mb-4 tracking-widest text-center italic">Custo Mensal Patrimonial Total</h3>
                     
                     <div class="grid grid-cols-2 gap-4 mb-6">
-                        <div class="text-center">
-                            <p class="text-[9px] text-blue-400 font-bold uppercase">Carro A</p>
-                            <h2 class="text-xl font-black" id="resA_total">R$ 0</h2>
+                        <div class="text-center border-r border-slate-700">
+                            <p class="text-[9px] text-blue-400 font-bold uppercase">Renegade</p>
+                            <h2 class="text-2xl font-black" id="resA_total">R$ 0</h2>
                         </div>
                         <div class="text-center">
-                            <p class="text-[9px] text-orange-400 font-bold uppercase">Carro B</p>
-                            <h2 class="text-xl font-black" id="resB_total">R$ 0</h2>
+                            <p class="text-[9px] text-orange-400 font-bold uppercase">T-Cross</p>
+                            <h2 class="text-2xl font-black" id="resB_total">R$ 0</h2>
                         </div>
                     </div>
 
                     <div class="border-t border-slate-700 pt-4 text-center">
-                        <p class="text-[10px] text-slate-400 uppercase">Diferença Mensal</p>
-                        <h2 class="text-3xl font-black text-red-500" id="delta_val">R$ 0</h2>
-                        <p class="text-[10px] text-slate-500 mt-1" id="delta_anual">R$ 0 /ano</p>
+                        <p class="text-[10px] text-slate-400 uppercase">Diferença Mensal Real</p>
+                        <h2 class="text-4xl font-black text-red-500" id="delta_val">R$ 0</h2>
+                        <p class="text-[10px] text-slate-500 mt-1 uppercase font-bold" id="delta_anual">R$ 0 /ano</p>
                     </div>
                 </div>
 
                 <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200">
-                    <h4 class="text-[10px] font-bold text-slate-400 uppercase mb-2">Composição do Gasto (Mensal)</h4>
-                    <canvas id="mainChart" height="250"></canvas>
+                    <h4 class="text-[10px] font-bold text-slate-400 uppercase mb-2">Breakdown de Custos (R$)</h4>
+                    <canvas id="mainChart" height="280"></canvas>
                 </div>
             </div>
 
@@ -151,35 +157,35 @@
 
             const fipe = getVal(`${prefixo}_fipe`);
             const avista = getVal(`${prefixo}_avista`);
+            const limp = getVal(`${prefixo}_limp`);
+            const seguroAnual = getVal(`${prefixo}_seguro`);
             const financiado = getVal(`${prefixo}_finan_val`);
             const jurosPct = getVal(`${prefixo}_finan_taxa`) / 100;
             const prazo = getVal(`${prefixo}_finan_prazo`);
             const consumo = getVal(`${prefixo}_consumo`) || 1;
             const ipvaPct = getVal(`${prefixo}_ipva_taxa`) / 100;
-            const seguroAnual = getVal(`${prefixo}_seguro`);
             const deprePct = getVal(`${prefixo}_depre`) / 100;
             const manut = getVal(`${prefixo}_manut`);
-            const limp = getVal(`${prefixo}_limp`);
 
-            // 1. Combustível
+            // 1. Gasolina
             const m_comb = (kmGlobal / consumo) * gasGlobal;
-            // 2. Impostos e Taxas (IPVA + Licenciam est. 150/ano)
-            const m_taxas = ((fipe * ipvaPct) + 150 + seguroAnual) / 12;
-            // 3. Operacional
-            const m_op = manut + limp;
+            // 2. Fixos Posse (IPVA + Seguro + Licenciam est. 150/ano + Garagem/Limpeza)
+            const m_posse = ((fipe * ipvaPct) + 150 + seguroAnual) / 12 + limp;
+            // 3. Manutenção Mensal
+            const m_manut = manut;
             // 4. Financiamento (PMT)
             let m_parcela = 0;
             if (financiado > 0 && jurosPct > 0) {
                 m_parcela = financiado * ( (jurosPct * Math.pow(1 + jurosPct, prazo)) / (Math.pow(1 + jurosPct, prazo) - 1) );
             }
-            // 5. Custo Oportunidade (CDI sobre o valor à vista)
+            // 5. Custo Oportunidade (CDI sobre o valor que saiu do banco)
             const m_cdi = (avista * cdiGlobal) / 12;
             // 6. Depreciação
             const m_depre = (fipe * deprePct) / 12;
 
             return {
-                total: m_comb + m_taxas + m_op + m_parcela + m_cdi + m_depre,
-                data: [m_comb, m_taxas, m_op, m_parcela, m_cdi, m_depre]
+                total: m_comb + m_posse + m_manut + m_parcela + m_cdi + m_depre,
+                data: [m_comb, m_posse, m_manut, m_parcela, m_cdi, m_depre]
             };
         }
 
@@ -187,14 +193,14 @@
             const resA = calcularTCO('vA');
             const resB = calcularTCO('vB');
 
-            const fmt = (v) => v.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+            const fmt = (v) => v.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL', maximumFractionDigits: 0 });
             
             document.getElementById('resA_total').innerText = fmt(resA.total);
             document.getElementById('resB_total').innerText = fmt(resB.total);
             
             const delta = resB.total - resA.total;
             document.getElementById('delta_val').innerText = fmt(delta);
-            document.getElementById('delta_anual').innerText = fmt(delta * 12) + " / ano";
+            document.getElementById('delta_anual').innerText = fmt(delta * 12) + " / ANO";
 
             updateChart(resA.data, resB.data);
         }
@@ -205,16 +211,17 @@
             chart = new Chart(ctx, {
                 type: 'bar',
                 data: {
-                    labels: ['Gasolina', 'Fixos/Seg', 'Manut/Extra', 'Financ.', 'CDI', 'Depre'],
+                    labels: ['Gasolina', 'Posse/Garagem', 'Manutenção', 'Parcela', 'CDI (Oport)', 'Depreciação'],
                     datasets: [
-                        { label: 'Carro A', data: dA, backgroundColor: '#3b82f6' },
-                        { label: 'Carro B', data: dB, backgroundColor: '#f97316' }
+                        { label: 'Renegade', data: dA, backgroundColor: '#3b82f6' },
+                        { label: 'T-Cross', data: dB, backgroundColor: '#f97316' }
                     ]
                 },
                 options: {
+                    indexAxis: 'y',
                     responsive: true,
                     plugins: { legend: { display: false } },
-                    scales: { y: { beginAtZero: true } }
+                    scales: { x: { beginAtZero: true } }
                 }
             });
         }
